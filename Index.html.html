@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thierry Orlando — AI Engineer & Systems Auditor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--fg:#0f0f0f;--fg2:#3a3a3a;--fg3:#777;
+--bg-a:#f0eee8;--bg-b:#e8e4f0;
+--bg2:rgba(255,255,255,0.55);--bg3:rgba(255,255,255,0.3);
+--line:rgba(0,0,0,0.1);--nav-bg:rgba(240,238,232,0.85);
+--card-bg:rgba(255,255,255,0.6);--card-hover:rgba(255,255,255,0.9);
+--glow:rgba(120,100,200,0.18);--cert:#7c3aed;
+--mono:'JetBrains Mono',monospace;--head:'Syne',sans-serif;
+}
+@media(prefers-color-scheme:dark){:root{
+--fg:#f0ede6;--fg2:#aaa8b0;--fg3:#666;
+--bg-a:#0e0d14;--bg-b:#100f18;
+--bg2:rgba(255,255,255,0.04);--bg3:rgba(255,255,255,0.02);
+--line:rgba(255,255,255,0.08);--nav-bg:rgba(14,13,20,0.88);
+--card-bg:rgba(255,255,255,0.04);--card-hover:rgba(255,255,255,0.08);
+--glow:rgba(140,120,255,0.2);--cert:#a78bfa;
+}}
+html{scroll-behavior:smooth}
+body{font-family:var(--head);color:var(--fg);min-height:100vh;padding:0;
+  background:linear-gradient(135deg,var(--bg-a) 0%,var(--bg-b) 100%);background-attachment:fixed;}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 3rem;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--nav-bg);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:100;transition:box-shadow 0.3s;}
+nav.scrolled{box-shadow:0 2px 24px rgba(100,80,180,0.08)}
+.nav-logo{font-size:18px;font-weight:800;letter-spacing:-0.5px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:12px;font-weight:500;color:var(--fg3);text-decoration:none;letter-spacing:1px;
+  text-transform:uppercase;transition:color 0.2s;padding-bottom:2px;border-bottom:2px solid transparent;}
+.nav-links a.active{color:var(--fg);border-bottom-color:var(--fg)}
+.nav-links a:hover{color:var(--fg)}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* HERO */
+.hero{padding:4rem 3rem;border-bottom:1px solid var(--line)}
+.hero-photo-row{display:flex;justify-content:center;margin-bottom:3rem}
+.profile-wrap{display:flex;flex-direction:column;align-items:center;gap:0.75rem}
+.profile-ring{width:160px;height:160px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(124,58,237,0.35),rgba(120,100,200,0.15));
+  padding:3px;cursor:pointer;transition:box-shadow 0.3s;}
+.profile-ring:hover{box-shadow:0 0 0 4px rgba(124,58,237,0.2),0 12px 40px var(--glow)}
+.profile-inner{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--bg3);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;position:relative;}
+.profile-img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none}
+.profile-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:1rem}
+.profile-placeholder-icon{font-size:28px;opacity:0.3}
+.profile-placeholder-text{font-family:var(--mono);font-size:10px;color:var(--fg3);line-height:1.5}
+.profile-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 0.25s;gap:4px;}
+.profile-ring:hover .profile-overlay{opacity:1}
+.profile-overlay-icon{font-size:20px;color:#fff}
+.profile-overlay-text{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.85);letter-spacing:1px;text-transform:uppercase}
+#photo-input{display:none}
+.profile-hint{font-family:var(--mono);font-size:10px;color:var(--fg3);text-align:center;letter-spacing:0.5px}
+.profile-remove{font-family:var(--mono);font-size:10px;color:var(--cert);cursor:pointer;text-align:center;
+  display:none;background:none;border:none;letter-spacing:0.5px;text-decoration:underline;text-underline-offset:3px;}
+.profile-remove:hover{opacity:0.7}
+
+.hero-content-row{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.hero-title{font-size:clamp(38px,5vw,64px);font-weight:800;line-height:1;letter-spacing:-3px;margin-bottom:1.5rem}
+.hero-title span{color:var(--fg3)}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:var(--mono);font-size:11px;padding:5px 12px;border:1px solid var(--line);border-radius:2px;color:var(--fg2);background:var(--bg2);backdrop-filter:blur(6px)}
+.tag.active{background:var(--fg);color:var(--bg-a);border-color:var(--fg)}
+.hero-bio{font-family:var(--mono);font-size:12.5px;line-height:1.9;color:var(--fg2);border-left:2px solid var(--line);padding-left:1.25rem}
+.hero-bio em{color:var(--fg);font-style:normal;font-weight:500}
+
+.section{padding:4rem 3rem;border-bottom:1px solid var(--line)}
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem}
+.section-label::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+.project-card{background:var(--card-bg);backdrop-filter:blur(10px);padding:2rem;cursor:pointer;position:relative;
+  transition:background 0.3s,transform 0.3s,box-shadow 0.3s;}
+.project-card:hover{background:var(--card-hover);transform:translateY(-4px);box-shadow:0 12px 40px var(--glow);z-index:2}
+.project-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.project-card.featured:hover{transform:translateY(-4px)}
+.project-num{font-family:var(--mono);font-size:11px;color:var(--fg3);margin-bottom:1.5rem}
+.project-name{font-size:18px;font-weight:700;letter-spacing:-0.5px;margin-bottom:0.75rem;line-height:1.3}
+.project-desc{font-family:var(--mono);font-size:12px;color:var(--fg2);line-height:1.7;margin-bottom:1.5rem}
+.project-stack{display:flex;flex-wrap:wrap;gap:6px}
+.stack-tag{font-family:var(--mono);font-size:10px;color:var(--fg3);background:var(--bg3);padding:3px 8px;border-radius:2px;backdrop-filter:blur(4px)}
+.stack-tag.highlight{background:var(--fg);color:var(--bg-a)}
+.project-arrow{position:absolute;top:1.5rem;right:1.5rem;font-size:18px;color:var(--fg3);transition:transform 0.25s,color 0.25s}
+.project-card:hover .project-arrow{transform:translate(3px,-3px);color:var(--fg)}
+.wip-badge{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:2px;background:#fef3c7;color:#92400e;border:1px solid #fde68a;display:inline-block;margin-bottom:1rem}
+.featured-left{display:flex;flex-direction:column}
+.featured-right{display:flex;flex-direction:column;justify-content:flex-end;border-left:1px solid var(--line);padding-left:2rem}
+.featured-stat{margin-bottom:1.5rem}
+.featured-stat-num{font-size:32px;font-weight:800;letter-spacing:-2px;line-height:1}
+.featured-stat-label{font-family:var(--mono);font-size:11px;color:var(--fg3);margin-top:4px}
+.featured-divider{height:1px;background:var(--line);margin:1.5rem 0}
+
+/* SKILLS */
+.tech-skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.skill-group{background:var(--card-bg);backdrop-filter:blur(10px);padding:1.5rem;transition:background 0.3s}
+.skill-group:hover{background:var(--card-hover)}
+.skill-group-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;color:var(--fg3)}
+.skill-list{list-style:none}
+.skill-list li{font-family:var(--mono);font-size:12px;color:var(--fg2);padding:4px 0;border-bottom:1px solid var(--line)}
+.skill-list li:last-child{border-bottom:none}
+
+.skill-tabs{display:flex;gap:1px;background:var(--line);margin-bottom:1px}
+.skill-tab{flex:1;padding:0.85rem 1rem;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1px;
+  text-transform:uppercase;text-align:center;cursor:pointer;background:var(--card-bg);
+  backdrop-filter:blur(10px);color:var(--fg3);border:none;transition:background 0.2s,color 0.2s;}
+.skill-tab.active{background:var(--fg);color:var(--bg-a)}
+.skill-tab:hover:not(.active){background:var(--card-hover);color:var(--fg)}
+.skill-panel{display:none}.skill-panel.active{display:block}
+
+.pro-skills-intro{font-family:var(--mono);font-size:12px;color:var(--fg3);margin-bottom:2rem;line-height:1.7}
+.pro-skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.pro-skill-card{background:var(--card-bg);backdrop-filter:blur(10px);padding:1.5rem 1.75rem;
+  transition:background 0.3s,transform 0.3s,box-shadow 0.3s;cursor:default;display:flex;flex-direction:column;gap:0.6rem;}
+.pro-skill-card:hover{background:var(--card-hover);transform:translateY(-3px);box-shadow:0 8px 30px var(--glow)}
+.pro-skill-name{font-size:13px;font-weight:700;line-height:1.4;letter-spacing:-0.2px}
+.pro-skill-sub{font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.cert-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;
+  color:var(--cert);background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);
+  padding:2px 8px;border-radius:2px;width:fit-content;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.contact-heading{font-size:40px;font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:1.5rem}
+.contact-heading span{color:var(--fg3)}
+.contact-sub{font-family:var(--mono);font-size:12px;color:var(--fg2);line-height:1.8;border-left:2px solid var(--cert);padding-left:1rem}
+.contact-links{display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.contact-link{background:var(--card-bg);backdrop-filter:blur(10px);padding:1.25rem 1.5rem;
+  display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--fg);
+  transition:background 0.25s,transform 0.25s,box-shadow 0.25s;}
+.contact-link:hover{background:var(--card-hover);transform:translateX(4px);box-shadow:4px 0 20px var(--glow)}
+.contact-link-label{font-family:var(--mono);font-size:13px;font-weight:500}
+.contact-link-value{font-family:var(--mono);font-size:12px;color:var(--fg3)}
+
+footer{padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.footer-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .hero{padding:3rem 1.5rem}
+  .hero-content-row{grid-template-columns:1fr;gap:2rem}
+  .section{padding:3rem 1.5rem}
+  .projects-grid{grid-template-columns:1fr}
+  .project-card.featured{grid-template-columns:1fr}
+  .tech-skills-grid{grid-template-columns:repeat(2,1fr)}
+  .pro-skills-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr;gap:2rem}
+  .skill-tabs{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-logo">TO</div>
+  <div class="nav-links">
+    <a href="#work" id="nav-work">Work</a>
+    <a href="#skills" id="nav-skills">Skills</a>
+    <a href="#contact" id="nav-contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-photo-row reveal">
+    <div class="profile-wrap">
+      <input type="file" id="photo-input" accept="image/*">
+      <div class="profile-ring" id="profile-ring" onclick="document.getElementById('photo-input').click()">
+        <div class="profile-inner">
+          <img id="profile-img" class="profile-img" alt="Thierry Orlando">
+          <div class="profile-placeholder" id="profile-placeholder">
+            <div class="profile-placeholder-icon">👤</div>
+            <div class="profile-placeholder-text">Click to upload<br>your photo</div>
+          </div>
+          <div class="profile-overlay">
+            <div class="profile-overlay-icon">📷</div>
+            <div class="profile-overlay-text">Change photo</div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-hint">Click circle to upload · PNG or JPG</div>
+      <button class="profile-remove" id="profile-remove" onclick="removePhoto()">Remove photo</button>
+    </div>
+  </div>
+  <div class="hero-content-row">
+    <div class="reveal">
+      <div class="hero-title">Thierry<br><span>Orlando.</span></div>
+      <div class="hero-tags">
+        <span class="tag active">Open to Work</span>
+        <span class="tag">AI Engineer</span>
+        <span class="tag">Systems Auditor</span>
+        <span class="tag">Nairobi, KE</span>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:0.15s">
+      <p class="hero-bio">
+         AI Engineer &amp; incoming Systems Auditor.<br><br>
+        I build <em>intelligent systems</em> that bridge the gap between cutting-edge AI and real business value. With a year of hands-on engineering experience, I specialize in designing AI-powered solutions that are practical, scalable, and human-centred.<br><br>
+        Beyond the code, I bring a sharp eye for <em>business consulting</em> and a deep commitment to <em>client satisfaction</em> — turning complex technical problems into outcomes that actually matter to people.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="work">
+  <div class="section-label reveal">Selected projects</div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">01</div><div class="project-arrow">↗</div>
+      <div class="project-name">Movie Agent with Knowledge Graph</div>
+      <div class="project-desc">An intelligent movie discovery agent that lets users find films across any genre by entering keywords or mood-based prompts. Backed by a Neo4j knowledge graph for rich, contextual, relationship-aware recommendations.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Neo4j</span>
+        <span class="stack-tag">Python</span><span class="stack-tag">TypeScript</span>
+        <span class="stack-tag">JavaScript</span><span class="stack-tag">Tailwind CSS</span>
+      </div>
+    </div>
+    <div class="project-card reveal" style="transition-delay:0.1s">
+      <div class="project-num">02</div><div class="project-arrow">↗</div>
+      <div class="project-name">AI Q&amp;A Chatbot</div>
+      <div class="project-desc">A conversational AI assistant built to answer questions with accuracy and speed. Combines LLM reasoning with LangChain's orchestration and a clean Streamlit interface for instant deployment.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">LangChain</span>
+        <span class="stack-tag">OpenAI API</span><span class="stack-tag">Streamlit</span>
+      </div>
+    </div>
+    <div class="project-card featured reveal" style="transition-delay:0.2s">
+      <div class="featured-left">
+        <div class="project-num">03</div>
+        <div class="wip-badge">⏳ In progress</div>
+        <div class="project-name">WhatsApp AI Business Agent</div>
+        <div class="project-desc">An always-on AI agent handling voice calls and WhatsApp messages in real time — so businesses never miss a client interaction. Responds intelligently, answers FAQs, qualifies leads, and escalates when needed.<br><br>Built with Twilio for communication, Supabase for persistence, and Retell AI for natural-sounding voice — delivering faster client management around the clock.</div>
+        <div class="project-stack">
+          <span class="stack-tag">Retell AI</span><span class="stack-tag">N8N</span>
+          <span class="stack-tag">OpenAI API</span><span class="stack-tag">Twilio</span>
+          <span class="stack-tag">Supabase</span><span class="stack-tag">Google Auth</span>
+        </div>
+      </div>
+      <div class="featured-right">
+        <div class="featured-stat"><div class="featured-stat-num">24/7</div><div class="featured-stat-label">Autonomous client coverage</div></div>
+        <div class="featured-divider"></div>
+        <div class="featured-stat"><div class="featured-stat-num">0s</div><div class="featured-stat-label">Response delay on inbound messages</div></div>
+        <div class="featured-divider"></div>
+        <div class="featured-stat"><div class="featured-stat-num">2-in-1</div><div class="featured-stat-label">Voice calls + text by one agent</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="section-label reveal">Technical skills</div>
+  <div class="tech-skills-grid">
+    <div class="skill-group reveal"><div class="skill-group-title">AI & ML</div>
+      <ul class="skill-list"><li>LLM Engineering</li><li>LangChain</li><li>Knowledge Graphs</li><li>Retell AI</li><li>OpenAI API</li></ul>
+    </div>
+    <div class="skill-group reveal" style="transition-delay:0.1s"><div class="skill-group-title">Development</div>
+      <ul class="skill-list"><li>Python</li><li>TypeScript</li><li>JavaScript</li><li>Streamlit</li><li>N8N</li></ul>
+    </div>
+    <div class="skill-group reveal" style="transition-delay:0.2s"><div class="skill-group-title">Data & Infra</div>
+      <ul class="skill-list"><li>Neo4j</li><li>Supabase</li><li>Twilio</li><li>Google Auth</li><li>Tailwind CSS</li></ul>
+    </div>
+    <div class="skill-group reveal" style="transition-delay:0.3s"><div class="skill-group-title">Business</div>
+      <ul class="skill-list"><li>Systems Auditing</li><li>Business Consulting</li><li>Client Relations</li><li>Process Analysis</li></ul>
+    </div>
+  </div>
+
+  <div class="section-label reveal" style="margin-top:3.5rem">Professional skills</div>
+  <p class="pro-skills-intro reveal">
+     Three specialist tracks on professional skills gained across AI Engineering, Client &amp; Business Operations, and Systems &amp; Audit.<br>
+    <span style="color:var(--cert);font-weight:500">★</span> Certified = Skillsoft-verified credential.
+  </p>
+  <div class="reveal">
+    <div class="skill-tabs">
+      <button class="skill-tab active" data-panel="ai">AI &amp; Engineering</button>
+      <button class="skill-tab" data-panel="client">Client &amp; Business</button>
+      <button class="skill-tab" data-panel="audit">Systems &amp; Audit</button>
+    </div>
+    <div class="skill-panel active" id="panel-ai">
+      <div class="pro-skills-grid">
+        <div class="pro-skill-card"><div class="pro-skill-name">AI Automation &amp; Workflow Maintenance</div><div class="pro-skill-sub">N8N · LangChain · Intelligent Process Automation</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Multi-Agent AI Systems &amp; Workflow Orchestration</div><div class="pro-skill-sub">Agent Pipelines · Task Delegation · Coordination Logic</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Prompt Engineering &amp; LLM Optimization</div><div class="pro-skill-sub">Chain-of-Thought · Few-Shot · System Prompt Design</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">AI Chatbot &amp; Intelligent Assistant Development</div><div class="pro-skill-sub">Conversational Design · Intent Handling · Deployment</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">OpenAI API &amp; Anthropic Integration</div><div class="pro-skill-sub">GPT-4 · Claude · API Design · Function Calling</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Retrieval-Augmented Generation (RAG)</div><div class="pro-skill-sub">Embeddings · Chunking · Context Injection · Retrieval Pipelines</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Vector &amp; Graph Database — AI Knowledge Retrieval</div><div class="pro-skill-sub">Pinecone · Neo4j · Semantic Search · Knowledge Graphs</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Programming &amp; Database Management</div><div class="pro-skill-sub">Python · JavaScript / TypeScript · SQL · Data Integrity</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">CRM &amp; Workflow System Management</div><div class="pro-skill-sub">Pipeline Automation · System Integration · Data Sync</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Firewall &amp; Network Security</div><div class="pro-skill-sub">Installation · Management · Threat Mitigation</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Technical Support</div><div class="pro-skill-sub">Issue Diagnosis · User Assistance · System Troubleshooting</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Time Management</div><div class="pro-skill-sub">Prioritisation · Scheduling · Delivery Focus</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+      </div>
+    </div>
+    <div class="skill-panel" id="panel-client">
+      <div class="pro-skills-grid">
+        <div class="pro-skill-card"><div class="pro-skill-name">Multichannel Customer Communication</div><div class="pro-skill-sub">Email · WhatsApp · SMS · Social Media · Web Chat</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">CRM &amp; Sales Pipeline Tracking</div><div class="pro-skill-sub">Customer Relationship Management · Lead Management · Data Entry</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Data Analysis &amp; Reporting</div><div class="pro-skill-sub">Records Management · Database Maintenance · Insights</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Market Research &amp; Analysis</div><div class="pro-skill-sub">Competitive Intelligence · Trend Mapping · Strategy</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Voice Customer Support</div><div class="pro-skill-sub">Call Handling · Client Inquiries · Escalation Management</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Sales Strategy &amp; Process Improvement</div><div class="pro-skill-sub">Strategy Development · Operational Efficiency</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Client Outreach &amp; Stakeholder Engagement</div><div class="pro-skill-sub">Relationship Building · Partner Communication</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">AI Automation &amp; Workflow Maintenance</div><div class="pro-skill-sub">N8N · LangChain · Process Automation</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">MS Office Suite</div><div class="pro-skill-sub">Excel · PowerPoint · Word · Outlook</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Time Management</div><div class="pro-skill-sub">Prioritisation · Scheduling · Productivity</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Communication &amp; Presentation</div><div class="pro-skill-sub">Verbal · Written · Public Speaking</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Customer Service</div><div class="pro-skill-sub">Client Satisfaction · Resolution · Retention</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+      </div>
+    </div>
+    <div class="skill-panel" id="panel-audit">
+      <div class="pro-skills-grid">
+        <div class="pro-skill-card"><div class="pro-skill-name">Systems Administration &amp; Implementation</div><div class="pro-skill-sub">System Setup · Configuration · Maintenance</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Audit Documentation &amp; Reporting</div><div class="pro-skill-sub">Findings · Evidence Collection · Report Writing</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">SaaS, Cloud, CRM &amp; ERP Systems</div><div class="pro-skill-sub">Cloud Storage · Enterprise Resource Planning · CRM Platforms</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Internal Control Evaluation</div><div class="pro-skill-sub">Control Testing · Gap Analysis · Recommendations</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Firewall &amp; Network Security</div><div class="pro-skill-sub">Installation · Management · Threat Mitigation</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Risk Assessment &amp; Analysis</div><div class="pro-skill-sub">Risk Identification · Scoring · Mitigation Planning</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Programming &amp; Database Management</div><div class="pro-skill-sub">Python · SQL · Data Integrity</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">AI Automation &amp; Workflow Maintenance</div><div class="pro-skill-sub">N8N · LangChain · Intelligent Process Automation</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Quality Control &amp; Technical Support</div><div class="pro-skill-sub">QA Testing · Issue Resolution · User Support</div></div>
+        <div class="pro-skill-card"><div class="pro-skill-name">MS Office Suite</div><div class="pro-skill-sub">Excel · PowerPoint · Word · Outlook</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Compliance Monitoring &amp; Time Management</div><div class="pro-skill-sub">Regulatory Adherence · Scheduling · Deadlines</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Emotional Intelligence</div><div class="pro-skill-sub">Empathy · Self-Awareness · Team Dynamics</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+        <div class="pro-skill-card"><div class="pro-skill-name">Communication &amp; Presentation Skills</div><div class="pro-skill-sub">Verbal · Written · Stakeholder Reporting</div>
+          <div class="cert-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified · Skillsoft</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="section-label">Get in touch</div>
+      <div class="contact-heading">Where<br><span>code meets</span><br>client impact.</div>
+      <p class="contact-sub">
+        I don't just build AI — I build AI that <strong>works for real people</strong> in real businesses.<br><br>
+        Whether you need an intelligent automation, a system audit, or someone who can translate tech into business outcomes — I'm the bridge between the two worlds.<br><br>
+        Let's create something that actually moves the needle.
+      </p>
+    </div>
+    <div class="reveal" style="transition-delay:0.15s">
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:thierryorlando9@gmail.com">
+          <span class="contact-link-label">✉ Email</span><span class="contact-link-value">thierryorlando9@gmail.com</span>
+        </a>
+        <a class="contact-link" href="https://github.com/yungorlando112" target="_blank" rel="noopener">
+          <span class="contact-link-label">⌥ GitHub</span><span class="contact-link-value">github.com/yungorlando112</span>
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/thierry-orlando-b409092ab/" target="_blank" rel="noopener">
+          <span class="contact-link-label">in LinkedIn</span><span class="contact-link-value">linkedin.com/in/thierry-orlando</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="reveal">
+  <span class="footer-copy">© 2026 Thierry Orlando. All rights reserved.</span>
+  <div class="footer-status"><span class="status-dot"></span>Available for new projects</div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Active nav
+const nav = document.getElementById('main-nav');
+const sections = [{id:'hero',nav:null},{id:'work',nav:'nav-work'},{id:'skills',nav:'nav-skills'},{id:'contact',nav:'nav-contact'}];
+const secObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      ['nav-work','nav-skills','nav-contact'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+      const match = sections.find(s => s.id === e.target.id);
+      if(match && match.nav){ const el = document.getElementById(match.nav); if(el) el.classList.add('active'); }
+    }
+  });
+}, {threshold:0.35});
+sections.forEach(s => { const el = document.getElementById(s.id); if(el) secObs.observe(el); });
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20), {passive:true});
+
+// Skill tabs
+document.querySelectorAll('.skill-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.skill-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.skill-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById('panel-' + tab.dataset.panel);
+    if(panel) panel.classList.add('active');
+  });
+});
+
+// Profile photo
+const photoInput = document.getElementById('photo-input');
+const profileImg = document.getElementById('profile-img');
+const placeholder = document.getElementById('profile-placeholder');
+const removeBtn = document.getElementById('profile-remove');
+
+photoInput.addEventListener('change', function() {
+  const file = this.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    profileImg.src = e.target.result;
+    profileImg.style.display = 'block';
+    placeholder.style.display = 'none';
+    removeBtn.style.display = 'block';
+    try { localStorage.setItem('to_profile_photo', e.target.result); } catch(err){}
+  };
+  reader.readAsDataURL(file);
+});
+
+function removePhoto() {
+  profileImg.src = '';
+  profileImg.style.display = 'none';
+  placeholder.style.display = 'flex';
+  removeBtn.style.display = 'none';
+  photoInput.value = '';
+  try { localStorage.removeItem('to_profile_photo'); } catch(err){}
+}
+
+try {
+  const saved = localStorage.getItem('to_profile_photo');
+  if(saved) {
+    profileImg.src = saved;
+    profileImg.style.display = 'block';
+    placeholder.style.display = 'none';
+    removeBtn.style.display = 'block';
+  }
+} catch(err){}
+</script>
+</body>
+</html>
